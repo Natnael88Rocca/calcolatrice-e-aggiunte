@@ -1,0 +1,32 @@
+
+<html lang="it">
+<body>
+
+    <input type="text" id="expr" placeholder="3+5*2">
+    <button onclick="calcola()">Calcola</button>
+    <div id="res">Risultato: </div>
+
+    <script>
+        function calcola() {
+            let str = document.getElementById('expr').value;
+            
+            // 1. Risolve le moltiplicazioni e divisioni
+            while (str.includes('*') || str.includes('/')) {
+                str = str.replace(/(\d+(\.\d+)?)\s*([*/])\s*(\d+(\.\d+)?)/, (_, n1, __, op, n2) => 
+                    op === '*' ? n1 * n2 : n1 / n2
+                );
+            }
+
+            // 2. Risolve le addizioni e sottrazioni
+            while (str.includes('+') || str.match(/\d+-\d+/)) {
+                str = str.replace(/(\d+(\.\d+)?)\s*([+-])\s*(\d+(\.\d+)?)/, (_, n1, __, op, n2) => 
+                    op === '+' ? Number(n1) + Number(n2) : n1 - n2
+                );
+            }
+
+            document.getElementById('res').innerText = "Risultato: " + str;
+        }
+    </script>
+
+</body>
+</html>
