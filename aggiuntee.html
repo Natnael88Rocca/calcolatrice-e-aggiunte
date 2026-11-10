@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<body>
+
+  <input type="date" id="dataNascita">
+  <br>
+  <input type="checkbox" name="materia" value="Matematica"> Matematica
+  <input type="checkbox" name="materia" value="Informatica"> Informatica
+  <input type="checkbox" name="materia" value="Storia"> Storia
+  <br>
+  <button onclick="inviaDati()">Invia</button>
+
+  <div id="out"></div>
+
+  <script>
+    function inviaDati() {
+      const dataInput = document.getElementById('dataNascita').value;
+      
+      let eta = "N/D";
+      if (dataInput !== "") {
+        const nascita = new Date(dataInput);
+        const oggi = new Date();
+        
+        let calcoloEta = oggi.getFullYear() - nascita.getFullYear();
+        const mese = oggi.getMonth() - nascita.getMonth();
+        
+        if (mese < 0 || (mese === 0 && oggi.getDate() < nascita.getDate())) {
+          calcoloEta--;
+        }
+        
+        eta = calcoloEta;
+      }
+
+      const listaCheckbox = document.querySelectorAll('input[name="materia"]');
+      let materieSelezionate = [];
+
+      for (let i = 0; i < listaCheckbox.length; i++) {
+        if (listaCheckbox[i].checked === true) {
+          materieSelezionate.push(listaCheckbox[i].value);
+        }
+      }
+
+      let stringaMaterie = materieSelezionate.join(', ');
+      if (stringaMaterie === "") {
+        stringaMaterie = "Nessuna";
+      }
+
+      document.getElementById('out').innerHTML = `
+        <table border="1">
+          <tr><th>Età</th><th>Materie</th></tr>
+          <tr><td>${eta}</td><td>${stringaMaterie}</td></tr>
+        </table>`;
+    }
+  </script>
+
+</body>
+</html>
